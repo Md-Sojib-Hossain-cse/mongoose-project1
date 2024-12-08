@@ -1,6 +1,6 @@
-import globals from 'globals'
-import pluginJs from '@eslint/js'
-import tseslint from 'typescript-eslint'
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-config-prettier';
 
 // const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended')
@@ -25,4 +25,4 @@ export default [
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-]
+];
