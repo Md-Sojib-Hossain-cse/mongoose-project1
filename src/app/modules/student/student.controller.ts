@@ -31,6 +31,7 @@ const deleteSingleStudent = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
+    message: 'Student created successfully',
     data: result,
   });
 });
