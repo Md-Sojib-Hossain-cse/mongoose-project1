@@ -15,6 +15,6 @@ const createAcademicSemesterValidationSchema = z.object({
   endMonth: z.enum([...Months] as [string, ...string[]]),
 });
 
-export const AcademicSemesterValidation = {
+export const AcademicSemesterValidations = {
   createAcademicSemesterValidationSchema,
 };
