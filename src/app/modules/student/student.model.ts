@@ -124,6 +124,10 @@ const studentSchema = new Schema<TStudent, TStudentModel>(
       type: Boolean,
       default: false,
     },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'academic-semester',
+    },
   },
   {
     toJSON: {
