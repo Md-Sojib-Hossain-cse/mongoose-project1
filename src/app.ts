@@ -13,9 +13,16 @@ app.use(cors());
 //application routes
 app.use('/api/v1', router);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('hello world');
-});
+const test = async (req: Request, res: Response) => {
+  const a = 20;
+  res.send(a);
+  // Promise.reject();
+};
+
+// app.get('/', (req: Request, res: Response) => {
+//   res.send('hello world');
+// });
+app.get('/', test);
 
 //global error handler
 app.use(globalErrorHandler);

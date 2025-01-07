@@ -128,6 +128,10 @@ const studentSchema = new Schema<TStudent, TStudentModel>(
       type: Schema.Types.ObjectId,
       ref: 'academic-semester',
     },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'academic-department',
+    },
   },
   {
     toJSON: {
@@ -139,7 +143,7 @@ const studentSchema = new Schema<TStudent, TStudentModel>(
 //virtual
 
 studentSchema.virtual('fullName').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
 });
 
 //Document middleware
@@ -164,7 +168,7 @@ studentSchema.pre('aggregate', async function (next) {
 
 //creating a custom static method
 studentSchema.statics.isUserExist = async function (id: string) {
-  const existingUser = await Student.findOne({ id: id });
+  const existingUser = await Student.findOne({ id });
   return existingUser;
 };
 
