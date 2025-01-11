@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose';
-import { TFaculty, TFacultyName } from './faculty.interface';
+import { TFaculty, TFacultyModel, TFacultyName } from './faculty.interface';
 
 const facultyNameSchema = new Schema<TFacultyName>({
   firstName: {
@@ -18,8 +18,9 @@ const facultyNameSchema = new Schema<TFacultyName>({
 const facultySchema = new Schema<TFaculty>(
   {
     id: {
-      types: String,
+      type: String,
       required: [true, 'Faculty ID is Required'],
+      unique: true,
     },
     user: {
       type: Schema.Types.ObjectId,
@@ -87,4 +88,29 @@ const facultySchema = new Schema<TFaculty>(
   },
 );
 
-export const FacultyModel = model<TFaculty>('faculty', facultySchema);
+// Query middleware
+facultySchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+facultySchema.pre('findOne', async function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
+
+facultySchema.pre('aggregate', async function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+//statics for finding is user exist
+facultySchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await FacultyModel.findOne({ id });
+  return existingUser;
+};
+
+export const FacultyModel = model<TFaculty, TFacultyModel>(
+  'faculty',
+  facultySchema,
+);

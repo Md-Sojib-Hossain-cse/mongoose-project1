@@ -1,29 +1,28 @@
 import { Model, Types } from 'mongoose';
 
-export type TFacultyName = {
+export type TAdminName = {
   firstName: string;
   middleName?: string;
   lastName: string;
 };
 
-export type TFaculty = {
+export type TAdmin = {
   id: string;
   user: Types.ObjectId;
-  name: TFacultyName;
+  name: TAdminName;
   designation: string;
   gender: 'male' | 'female' | 'other';
-  dateOfBirth?: Date;
+  dateOfBirth: Date;
   email: string;
   contactNo: string;
   emergencyContactNo: string;
   presentAddress: string;
   permanentAddress: string;
-  profileImage?: string;
-  academicDepartment: Types.ObjectId;
-  academicFaculty: Types.ObjectId;
+  profileImage: string;
+  managementDepartment: string;
   isDeleted: boolean;
 };
 
-export interface TFacultyModel extends Model<TFaculty> {
-  isUserExist(id: string): Promise<TFaculty | null>;
+export interface TAdminModel extends Model<TAdmin> {
+  isUserExist(id: string): Promise<TAdmin | null>;
 }

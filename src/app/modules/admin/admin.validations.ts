@@ -1,44 +1,35 @@
 import { z } from 'zod';
 
-// Faculty Name Schema
-const createFacultyNameValidationSchema = z.object({
+const CreateAdminNameValidationSchema = z.object({
   firstName: z
     .string()
     .trim()
-    .nonempty('First Name is Required')
-    .max(50, 'First Name cannot exceed 50 characters'),
+    .nonempty('First name is required')
+    .max(20, 'First name cannot be more than 20 characters'),
   middleName: z
     .string()
-    .trim()
     .optional()
     .refine((value) => !value || /^[A-Za-z]+$/.test(value), {
-      message: 'Middle Name can only contain alphabetic characters',
+      message: 'Middle name is not valid',
     }),
-  lastName: z
-    .string()
-    .trim()
-    .nonempty('Last Name is Required')
-    .max(50, 'Last Name cannot exceed 50 characters'),
+  lastName: z.string().nonempty('Last name is required'),
 });
 
-const updateFacultyNameValidationSchema = z.object({
+const UpdateAdminNameValidationSchema = z.object({
   firstName: z.string().trim().optional(),
   middleName: z
     .string()
-    .trim()
     .optional()
     .refine((value) => !value || /^[A-Za-z]+$/.test(value), {
-      message: 'Middle Name can only contain alphabetic characters',
+      message: 'Middle name is not valid',
     }),
-  lastName: z.string().trim().optional(),
+  lastName: z.string().optional(),
 });
 
-// Faculty Schema
-const createFacultyValidationSchema = z.object({
+const createAdminValidationSchema = z.object({
   body: z.object({
-    password: z.string().optional(),
-    faculty: z.object({
-      name: createFacultyNameValidationSchema,
+    admin: z.object({
+      name: CreateAdminNameValidationSchema,
       designation: z
         .string()
         .nonempty('Designation is Required')
@@ -47,7 +38,7 @@ const createFacultyValidationSchema = z.object({
         required_error: 'Gender is Required',
         invalid_type_error: 'Gender must be male, female, or other',
       }),
-      dateOfBirth: z.string().optional(),
+      dateOfBirth: z.string().nonempty('Date of Birth is Required'),
       email: z
         .string()
         .nonempty('Email is Required')
@@ -72,22 +63,20 @@ const createFacultyValidationSchema = z.object({
         .string()
         .nonempty('Permanent Address is Required')
         .max(255, 'Permanent Address cannot exceed 255 characters'),
-      profileImage: z.string().optional(),
-      academicFaculty: z.string().nonempty('Academic Faculty is Required'),
-      academicDepartment: z
+      profileImage: z.string().nonempty('Profile Image is Required'),
+      managementDepartment: z
         .string()
-        .nonempty('Academic Department is Required'),
-      isDeleted: z.boolean().optional(),
+        .nonempty('Management Department is Required'),
     }),
   }),
 });
 
-// Update Faculty Schema
-const updateFacultyValidationSchema = z.object({
+const updateAdminValidationSchema = z.object({
   body: z.object({
-    password: z.string().optional(),
-    faculty: z.object({
-      name: updateFacultyNameValidationSchema.optional(),
+    admin: z.object({
+      id: z.string().optional(),
+      user: z.string().optional(),
+      name: UpdateAdminNameValidationSchema.optional(), // Make all fields in `name` optional
       designation: z
         .string()
         .max(100, 'Designation cannot exceed 100 characters')
@@ -120,14 +109,13 @@ const updateFacultyValidationSchema = z.object({
         .max(255, 'Permanent Address cannot exceed 255 characters')
         .optional(),
       profileImage: z.string().optional(),
-      academicFaculty: z.string().optional(),
-      academicDepartment: z.string().optional(),
+      managementDepartment: z.string().optional(),
       isDeleted: z.boolean().optional(),
     }),
   }),
 });
 
-export const facultyValidations = {
-  createFacultyValidationSchema,
-  updateFacultyValidationSchema,
+export const adminValidations = {
+  createAdminValidationSchema,
+  updateAdminValidationSchema,
 };
